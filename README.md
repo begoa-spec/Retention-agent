@@ -11,6 +11,10 @@ reviews the client's situation, decides whether action is warranted,
 drafts that action itself, and either sends it or flags it for a quick
 human decision — depending on how confident it is.
 
+   ## Architecture
+
+   ![Architecture diagram](./docs/architecture.svg)
+
 ## The problem
 
 Freelance consultants and small agencies lose clients not because they
