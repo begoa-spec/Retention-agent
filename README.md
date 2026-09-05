@@ -11,9 +11,11 @@ reviews the client's situation, decides whether action is warranted,
 drafts that action itself, and either sends it or flags it for a quick
 human decision — depending on how confident it is.
 
-   ## Architecture
 
-   ![Architecture diagram](./docs/architecture.svg)
+ ## Architecture
+
+![Architecture diagram](./docs/architecture.svg)
+
 
 ## The problem
 
@@ -180,8 +182,8 @@ npm run dev
 
 - [ ] Deploy the agent on AWS Lambda for scheduled, unattended runs
 - [ ] Optional: migrate to Bedrock AgentCore
-- [ ] Connect the Settings page's confidence slider to a live value the
-      agent reads, instead of a display-only control
+- [x] Connect the Settings page's confidence slider to a live value
+      the agent reads — done
 
 ## License
 

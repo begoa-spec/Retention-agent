@@ -41,9 +41,21 @@ if missing:
 supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
 
 # ---------------------------------------------------------------------
-# Confidence threshold — the one "settings" knob the UI exposes.
+# Confidence threshold — read live from Supabase so the dashboard's
+# Settings page actually controls behavior, not just a display value.
+# Falls back to 0.75 if the settings table is empty or unreachable.
 # ---------------------------------------------------------------------
-CONFIDENCE_THRESHOLD = 0.75
+DEFAULT_CONFIDENCE_THRESHOLD = 0.75
+
+
+def get_confidence_threshold() -> float:
+    try:
+        result = supabase.table("settings").select("confidence_threshold").limit(1).execute()
+        if result.data:
+            return result.data[0]["confidence_threshold"]
+    except Exception:
+        pass
+    return DEFAULT_CONFIDENCE_THRESHOLD
 
 # ---------------------------------------------------------------------
 # Spend guard — protects your API budget from runaway usage. Adjust
@@ -136,7 +148,8 @@ def record_decision(
         The final routed decision, including whether it was auto-sent
         or escalated for review.
     """
-    status = "auto_sent" if confidence >= CONFIDENCE_THRESHOLD else "needs_review"
+    threshold = get_confidence_threshold()
+    status = "auto_sent" if confidence >= threshold else "needs_review"
 
     record = {
         "client_id": client_id,
